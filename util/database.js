@@ -6,3 +6,16 @@ const db = new Firestore({
 });
 
 module.exports = db;
+
+// async function createUser() {
+//   const docRef = db.collection("users").doc("Catalin");
+//   await docRef.set({
+//     name: "Chiriac Catalin",
+//     birtdate: "10/05/2005",
+//     email: "chiriac13@yahoo.com",
+//     address: "Iasi, Iasi, Romania",
+//     profileImageUrl: "someUrl",
+//   });
+// }
+
+// createUser();
