@@ -2,10 +2,6 @@ const express = require("express");
 const userModel = require("../models/user");
 const utils = require("../util/funtions");
 
-exports.createUser = (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({ successMessage: "User created" });
-};
 
 exports.getUser = (req, res, next) => {
   const userId = req.params.userId;
@@ -21,10 +17,10 @@ exports.getUser = (req, res, next) => {
 const defaultProfilePicture = "https://picsum.photos/id/237/200/200";
 
 exports.createUser = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const data = { ...req.body };
   utils.modifyVideoUrl(data);
-  console.log(data);
+  // console.log(data);
   const userId = req.params.userId;
   if (data.mainInfo.imageUrl === null) {
     data.mainInfo.imageUrl = defaultProfilePicture;
