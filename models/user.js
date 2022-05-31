@@ -11,6 +11,7 @@ module.exports.findUserById = async function (uid) {
   }
 };
 
+
 module.exports.postUser = async function (data, uid) {
   try {
     const res = await db.collection('users').doc(uid).set(data);
