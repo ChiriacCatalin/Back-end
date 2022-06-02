@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 
 const userRoutes = require("./routes/user-profile");
+const imageRoutes = require("./routes/image.js");
 const errorController = require("./controllers/error");
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 
 app.use("/api", userRoutes);
+app.use("/api", imageRoutes);
 app.use(errorController.get404);
 
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const userModel = require("../models/user");
-const utils = require("../util/funtions");
+const utils = require("../util/functions");
 
 
 exports.getUser = (req, res, next) => {
