@@ -33,9 +33,12 @@ exports.createUser = (req, res, next) => {
   });
 };
 
+
 exports.updateUserFields = (req, res, next) => {
+  // we have to overwrite the whole field array in order to updated the data and keep it's order because of Firestore array limitations!
   const fieldName = req.body.fieldName;
   const objData = req.body.obj;
+  utils.modifyVideoUrl(objData);
   const userId = req.params.userId;
   userModel.updateUserFields(userId, fieldName, objData).then(response => {
     if (!response) {
@@ -43,7 +46,21 @@ exports.updateUserFields = (req, res, next) => {
     } else {
       res.status(201).json({ successMessage: "User data updated successfully!" });
     }
-  })
+  });
+}
+
+exports.addUserFields = (req, res, next) => {
+  const fieldName = req.body.fieldName;
+  const objData = req.body.obj;
+  utils.modifyVideoUrl(objData);
+  const userId = req.params.userId;
+  userModel.addUserFields(userId, fieldName, objData).then(response => {
+    if (!response) {
+      res.status(500).json({ errorMessage: "User data could not be added!" });
+    } else {
+      res.status(201).json({ successMessage: "User data added successfully!" });
+    }
+  });
 };
 
 exports.deleteUserFields = (req, res, next) => {

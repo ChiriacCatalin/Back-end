@@ -30,7 +30,7 @@ module.exports.uploadImageProfile = async function (imageUrl, uid) {
   }
 };
 
-module.exports.updateUserFields = async function (uid, fieldName, obj) {
+module.exports.addUserFields = async function (uid, fieldName, obj) {
   const docRef = db.collection("users").doc(uid);
   try {
     let res;
@@ -68,6 +68,28 @@ module.exports.deleteUserFields = async function (uid, fieldName, obj) {
     }
     return true;
   } catch (err) {
+    return false;
+  }
+};
+
+
+module.exports.updateUserFields = async function (uid, fieldName, obj) {
+  const docRef = db.collection("users").doc(uid);
+  try {
+    let res;
+    switch (fieldName) {
+      case "jobs":
+        res = await docRef.update({ jobs: obj });
+        break;
+      case "projects":
+        res = await docRef.update({ projects: obj});
+        break;
+      case "schools":
+        res = await docRef.update({ schools: obj });
+        break;
+    }
+    return true;
+  } catch {
     return false;
   }
 };
