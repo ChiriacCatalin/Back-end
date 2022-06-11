@@ -72,9 +72,9 @@ module.exports.deleteUserFields = async function (uid, fieldName, obj) {
   }
 };
 
-
 module.exports.updateUserFields = async function (uid, fieldName, obj) {
   const docRef = db.collection("users").doc(uid);
+  console.log(obj);
   try {
     let res;
     switch (fieldName) {
@@ -82,10 +82,30 @@ module.exports.updateUserFields = async function (uid, fieldName, obj) {
         res = await docRef.update({ jobs: obj });
         break;
       case "projects":
-        res = await docRef.update({ projects: obj});
+        res = await docRef.update({ projects: obj });
         break;
       case "schools":
         res = await docRef.update({ schools: obj });
+        break;
+      case "mainInfo":
+        res = await docRef.update({
+          "mainInfo.name": obj.name,
+          "mainInfo.birthdate": obj.birthdate,
+          "mainInfo.city": obj.city,
+          "mainInfo.country": obj.country,
+          "mainInfo.email": obj.email,
+          "mainInfo.mainVideo": obj.mainVideo,
+          "mainInfo.studiedAt": obj.studiedAt,
+          "mainInfo.worksAt": obj.worksAt,
+        });
+        break;
+      case "skills":
+        res = await docRef.update({
+          fieldsOfExpertise: obj.fieldsOfExpertise,
+          personalSkills: obj.personalSkills,
+          toolsAndLanguages: obj.toolsAndLanguages,
+          skillsVideo: obj.skillsVideo,
+        });
         break;
     }
     return true;
