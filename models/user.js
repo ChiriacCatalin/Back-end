@@ -74,7 +74,6 @@ module.exports.deleteUserFields = async function (uid, fieldName, obj) {
 
 module.exports.updateUserFields = async function (uid, fieldName, obj) {
   const docRef = db.collection("users").doc(uid);
-  console.log(obj);
   try {
     let res;
     switch (fieldName) {
