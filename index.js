@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const userRoutes = require("./routes/user-profile");
 const imageRoutes = require("./routes/image.js");
+const companyRoutes = require("./routes/company")
 const errorController = require("./controllers/error");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/api", userRoutes);
 app.use("/api", imageRoutes);
+app.use("/api", companyRoutes);
 app.use(errorController.get404);
 
 
