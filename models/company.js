@@ -19,3 +19,13 @@ module.exports.findCompanyById = async function (uid) {
     return doc.data();
   }
 };
+
+module.exports.uploadImageProfile = async function (imageUrl, uid) {
+  const docRef = db.collection("companies").doc(uid);
+  try {
+    const res = await docRef.update({ imageUrl: imageUrl });
+    return true;
+  } catch {
+    return false;
+  }
+};
