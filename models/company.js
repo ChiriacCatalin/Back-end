@@ -29,3 +29,36 @@ module.exports.uploadImageProfile = async function (imageUrl, uid) {
     return false;
   }
 };
+
+module.exports.updateCompanyFields = async function (uid, fieldName, obj) {
+  const docRef = db.collection("companies").doc(uid);
+  try {
+    let res;
+    switch (fieldName) {
+      case "mainInfo":
+        res = await docRef.update({
+          name: obj.name,
+          mainVideo: obj.mainVideo,
+          industry: obj.industry,
+          salesPitch: obj.salesPitch,
+          headquarters: obj.headquarters,
+        });
+        break;
+      case "about":
+        res = await docRef.update({
+          industry: obj.industry,
+          headquarters: obj.headquarters,
+          aboutUs: obj.aboutUs,
+          companySize: obj.companySize,
+          founded: obj.founded,
+          contact: obj.contact,
+          companyAboutVideo: obj.companyAboutVideo,
+          website: obj.website,
+        });
+        break;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};

@@ -29,3 +29,18 @@ exports.getCompany = (req, res, next) => {
     }
   });
 };
+
+
+exports.updateCompanyFields = (req, res, next) => {
+  const fieldName = req.body.fieldName;
+  const objData = req.body.obj;
+  utils.modifyVideoUrl(objData);
+  const companyId = req.params.companyId;
+  companyModel.updateCompanyFields(companyId, fieldName, objData).then(response => {
+    if (!response) {
+      res.status(500).json({ errorMessage: "Company data could not be updated!" });
+    } else {
+      res.status(201).json({ successMessage: "Company data updated successfully!" });
+    }
+  });
+}
