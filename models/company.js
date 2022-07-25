@@ -38,7 +38,7 @@ module.exports.updateCompanyFields = async function (uid, fieldName, obj) {
       case "mainInfo":
         res = await docRef.update({
           name: obj.name,
-          mainVideo: obj.mainVideo,
+          companyVideo: obj.companyVideo,
           industry: obj.industry,
           salesPitch: obj.salesPitch,
           headquarters: obj.headquarters,
