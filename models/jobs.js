@@ -30,7 +30,10 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
   try {
     const snapshot = await query.get();
     // console.log(snapshot.docs[0].data());
-    return snapshot.docs.map((doc) => doc.data());
+    return snapshot.docs.map((doc) => {
+      const id = doc.id;
+      return { id, ...doc.data() };
+    });
   } catch (err) {
     console.log(err);
     return null;
@@ -44,7 +47,10 @@ module.exports.findAllJobs = async function () {
       .orderBy("date", "desc")
       .limit(10)
       .get();
-    return querySnapshot.docs.map((doc) => doc.data());
+    return querySnapshot.docs.map((doc) => {
+      const id = doc.id;
+      return { id, ...doc.data() };
+    });
   } catch (err) {
     console.log(err);
     return null;
