@@ -34,7 +34,38 @@ exports.getAllJobs = (req, res, next) => {
     if (response) {
       res.status(200).json(response);
     } else {
-      res.status(500).json({ errorMessage: "Error getting the jobs from the cloud" });
+      res
+        .status(500)
+        .json({ errorMessage: "Error getting the jobs from the cloud" });
+    }
+  });
+};
+
+exports.deleteJobById = (req, res, next) => {
+  const companyId = req.params.companyId;
+  const jobId = req.params.jobId;
+  jobsModel.deleteJobById(companyId, jobId).then((response) => {
+    if (!response) {
+      res.status(500).json({ errorMessage: "Job could not be removed!" });
+    } else {
+      res
+        .status(200)
+        .json({ successMessage: "Job data removed successfully!" });
+    }
+  });
+};
+
+exports.updateJobById = (req, res, next) => {
+  const companyId = req.params.companyId;
+  const jobId = req.params.jobId;
+  let data = { ...req.body };
+  utils.modifyVideoUrl(data);
+  data.date = Date.now();
+  jobsModel.updateJobById(companyId, jobId, data).then((response) => {
+    if (!response) {
+      res.status(500).json({ errorMessage: "Job could not be updated" });
+    } else {
+      res.status(201).json({ successMessage: "Job updated succesfuly" });
     }
   });
 };

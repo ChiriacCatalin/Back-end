@@ -56,3 +56,27 @@ module.exports.findAllJobs = async function () {
     return null;
   }
 };
+
+module.exports.deleteJobById = async function (companyId, jobId) {
+  const docRef = db.collection("companies").doc(companyId).collection("jobs").doc(jobId);
+  try {
+    const res = await docRef.delete();
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+module.exports.updateJobById = async function (companyId, jobId, data) {
+  try {
+    const res = await db
+      .collection("companies")
+      .doc(companyId)
+      .collection("jobs")
+      .doc(jobId)
+      .set(data);
+    return true;
+  } catch {
+    return false;
+  }
+};
