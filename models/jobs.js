@@ -20,12 +20,12 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
       .startAt(lastDate)
-      .limit(10);
+      .limit(4);
   } else {
     query = db
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
-      .limit(10);
+      .limit(4);
   }
   try {
     const snapshot = await query.get();
@@ -40,15 +40,23 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
   }
 };
 
-module.exports.findAllJobs = async function () {
-  try {
-    const querySnapshot = await db
+module.exports.findAllJobs = async function (lastDate) {
+  let query;
+  if (lastDate) {
+    query = db
       .collectionGroup("jobs")
       .orderBy("date", "desc")
-      .limit(10)
-      .get();
+      .startAfter(+lastDate)
+      .limit(4);
+  } else {
+    query = db.collectionGroup("jobs").orderBy("date", "desc").limit(4);
+  }
+
+  try {
+    const querySnapshot = await query.get();
     return querySnapshot.docs.map((doc) => {
       const id = doc.id;
+      console.log(doc.data().jobTitle);
       return { id, ...doc.data() };
     });
   } catch (err) {
@@ -58,7 +66,11 @@ module.exports.findAllJobs = async function () {
 };
 
 module.exports.deleteJobById = async function (companyId, jobId) {
-  const docRef = db.collection("companies").doc(companyId).collection("jobs").doc(jobId);
+  const docRef = db
+    .collection("companies")
+    .doc(companyId)
+    .collection("jobs")
+    .doc(jobId);
   try {
     const res = await docRef.delete();
     return true;

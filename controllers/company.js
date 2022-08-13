@@ -1,7 +1,7 @@
 const companyModel = require("../models/company");
 const utils = require("../util/functions");
 
-const defaultProfilePicture = "https://picsum.photos/id/237/200/200";
+const defaultProfilePicture = "https://storage.googleapis.com/licenta_image_files/default_profile.jpg";
 
 exports.createCompany = (req, res, next) => {
   const data = { ...req.body };

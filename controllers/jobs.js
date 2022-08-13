@@ -30,7 +30,8 @@ exports.getCompanyJobs = (req, res, next) => {
 };
 
 exports.getAllJobs = (req, res, next) => {
-  jobsModel.findAllJobs().then((response) => {
+  const lastDate = req.query.lastDate;
+  jobsModel.findAllJobs(lastDate).then((response) => {
     if (response) {
       res.status(200).json(response);
     } else {
