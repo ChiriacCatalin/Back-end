@@ -41,15 +41,14 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
 };
 
 module.exports.findAllJobs = async function (lastDate) {
-  let query;
+  let query = db.collectionGroup("jobs");
   if (lastDate) {
-    query = db
-      .collectionGroup("jobs")
+    query = query
       .orderBy("date", "desc")
       .startAfter(+lastDate)
       .limit(4);
   } else {
-    query = db.collectionGroup("jobs").orderBy("date", "desc").limit(4);
+    query = query.orderBy("date", "desc").limit(4);
   }
 
   try {

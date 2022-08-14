@@ -7,6 +7,8 @@ exports.createJob = (req, res, next) => {
   let data = { ...req.body };
   utils.modifyVideoUrl(data);
   data.date = Date.now();
+  data.filterCity = data.city.toLowerCase().replace(/\s+/g,' ').trim();
+  data.fiterCompanyName = data.companyName.toLowerCase().replace(/\s+/g,' ').trim();
   jobsModel.createJob(companyId, data).then((response) => {
     if (!response) {
       res
