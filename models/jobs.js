@@ -19,7 +19,7 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
     query = db
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
-      .startAt(lastDate)
+      .startAt(+lastDate)
       .limit(4);
   } else {
     query = db
@@ -56,7 +56,7 @@ module.exports.findAllJobs = async function (lastDate) {
     const querySnapshot = await query.get();
     return querySnapshot.docs.map((doc) => {
       const id = doc.id;
-      console.log(doc.data().jobTitle);
+      // console.log(doc.data().jobTitle);
       return { id, ...doc.data() };
     });
   } catch (err) {

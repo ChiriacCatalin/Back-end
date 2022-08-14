@@ -20,7 +20,8 @@ exports.createJob = (req, res, next) => {
 
 exports.getCompanyJobs = (req, res, next) => {
   const companyId = req.params.companyId;
-  jobsModel.findJobsByCompanyId(companyId, null).then((response) => {
+  const lastDate = req.query.lastDate;
+  jobsModel.findJobsByCompanyId(companyId, lastDate).then((response) => {
     if (response) {
       res.status(200).json(response);
     } else {
