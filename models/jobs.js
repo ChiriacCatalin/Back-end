@@ -40,17 +40,8 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
   }
 };
 
-module.exports.findAllJobs = async function (lastDate) {
-  let query = db.collectionGroup("jobs");
-  if (lastDate) {
-    query = query
-      .orderBy("date", "desc")
-      .startAfter(+lastDate)
-      .limit(4);
-  } else {
-    query = query.orderBy("date", "desc").limit(4);
-  }
-
+module.exports.findAllJobs = async function (queryParams) {
+  let query = setQuery(queryParams);
   try {
     const querySnapshot = await query.get();
     return querySnapshot.docs.map((doc) => {
@@ -63,6 +54,39 @@ module.exports.findAllJobs = async function (lastDate) {
     return null;
   }
 };
+
+function setQuery(queryParams) {
+  let query = db.collectionGroup("jobs");
+
+  if (queryParams.date) {
+    let dateLimit = Date.now() - +queryParams.date;
+    query = query.where("date", ">=", dateLimit);
+  }
+  if (queryParams.experienceLevel)
+    query = query.where("experienceLevel", "==", queryParams.experienceLevel);
+  if (queryParams.jobType) {
+    query = query.where("jobType", "==", queryParams.jobType);
+  }
+  if (queryParams.onSiteRemote) {
+    query = query.where("onSiteRemote", "==", queryParams.onSiteRemote);
+  }
+  if (queryParams.country) {
+    query = query.where("country", "==", queryParams.country);
+  }
+  if (queryParams.city) {
+    query = query.where(
+      "filterCity",
+      "==",
+      queryParams.city.toLowerCase().replace(/\s+/g, " ").trim()
+    );
+  }
+
+  query = query.orderBy("date", "desc");
+  if (queryParams.lastDate) {
+    query = query.startAfter(+queryParams.lastDate);
+  }
+  return query.limit(4);
+}
 
 module.exports.deleteJobById = async function (companyId, jobId) {
   const docRef = db
