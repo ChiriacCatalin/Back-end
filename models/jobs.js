@@ -19,7 +19,7 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
     query = db
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
-      .startAt(+lastDate)
+      .startAfter(+lastDate)
       .limit(4);
   } else {
     query = db
