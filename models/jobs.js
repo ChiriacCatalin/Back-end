@@ -1,3 +1,4 @@
+const { use } = require("../routes/jobs");
 const db = require("../util/database");
 
 module.exports.createJob = async function (uid, data) {
@@ -113,5 +114,73 @@ module.exports.updateJobById = async function (companyId, jobId, data) {
     return true;
   } catch {
     return false;
+  }
+};
+
+module.exports.addApplicant = async function (companyId, jobId, userId, data) {
+  try {
+    const res = await db
+      .collection("companies")
+      .doc(companyId)
+      .collection("jobs")
+      .doc(jobId)
+      .collection("applicants")
+      .doc(userId)
+      .set(data);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+module.exports.deleteApplicantById = async function (companyId, jobId, userId) {
+  const docRef = db
+    .collection("companies")
+    .doc(companyId)
+    .collection("jobs")
+    .doc(jobId)
+    .collection("applicants")
+    .doc(userId);
+  try {
+    const res = await docRef.delete();
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+module.exports.getAllJobAplicants = async function (companyId, jobId) {
+  const query = db
+    .collection("companies")
+    .doc(companyId)
+    .collection("jobs")
+    .doc(jobId)
+    .collection("applicants");
+  try {
+    const snapshot = await query.get();
+    // console.log(snapshot.docs[0].data());
+    return snapshot.docs.map((doc) => {
+      const id = doc.id;
+      return { id, ...doc.data() };
+    });
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+
+
+//for testing purposes
+module.exports.getAllAplicants = async function (jobId) {
+  query = db.collectionGroup("applicants");
+  try {
+    const querySnapshot = await query.get();
+    return querySnapshot.docs.map((doc) => {
+      return doc.data();
+    });
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 };
