@@ -21,12 +21,12 @@ module.exports.findJobsByCompanyId = async function (uid, lastDate) {
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
       .startAfter(+lastDate)
-      .limit(4);
+      .limit(5);
   } else {
     query = db
       .collection(`companies/${uid}/jobs`)
       .orderBy("date", "desc")
-      .limit(4);
+      .limit(5);
   }
   try {
     const snapshot = await query.get();
@@ -86,7 +86,7 @@ function setQuery(queryParams) {
   if (queryParams.lastDate) {
     query = query.startAfter(+queryParams.lastDate);
   }
-  return query.limit(4);
+  return query.limit(5);
 }
 
 module.exports.deleteJobById = async function (companyId, jobId) {
