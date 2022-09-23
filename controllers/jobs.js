@@ -103,6 +103,7 @@ exports.addApplicant = (req, res, next) => {
       data.userId = userId;
       data.userProfile = user.mainInfo.imageUrl;
       data.userName = user.mainInfo.name;
+      data.userContact = user.mainInfo.email;
       jobsModel
         .addApplicant(companyId, jobId, userId, data)
         .then((response) => {
