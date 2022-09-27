@@ -124,7 +124,8 @@ exports.addApplicant = (req, res, next) => {
 exports.getAllJobAplicants = (req, res, next) => {
   const companyId = req.params.companyId;
   const jobId = req.params.jobId;
-  jobsModel.getAllJobAplicants(companyId, jobId).then((response) => {
+  const lastDate = req.query.lastDate;
+  jobsModel.getAllJobAplicants(companyId, jobId, lastDate).then((response) => {
     if (!response) {
       res
         .status(500)

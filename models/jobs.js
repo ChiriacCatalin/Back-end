@@ -149,16 +149,24 @@ module.exports.deleteApplicantById = async function (companyId, jobId, userId) {
   }
 };
 
-module.exports.getAllJobAplicants = async function (companyId, jobId) {
-  const query = db
+module.exports.getAllJobAplicants = async function (
+  companyId,
+  jobId,
+  lastDate
+) {
+  let query = db
     .collection("companies")
     .doc(companyId)
     .collection("jobs")
     .doc(jobId)
-    .collection("applicants");
+    .collection("applicants")
+    .orderBy("date", "desc");
+  if (lastDate) {
+    query = query.startAfter(+lastDate);
+  }
+  query = query.limit(5);
   try {
     const snapshot = await query.get();
-    // console.log(snapshot.docs[0].data());
     return snapshot.docs.map((doc) => {
       const id = doc.id;
       return { id, ...doc.data() };
@@ -168,8 +176,6 @@ module.exports.getAllJobAplicants = async function (companyId, jobId) {
     return null;
   }
 };
-
-
 
 //for testing purposes
 module.exports.getAllAplicants = async function (jobId) {
