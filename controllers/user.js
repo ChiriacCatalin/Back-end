@@ -13,7 +13,7 @@ exports.getUser = (req, res, next) => {
   });
 };
 
-const defaultProfilePicture = "https://picsum.photos/id/237/200/200";
+const defaultProfilePicture = "https://storage.googleapis.com/licenta_image_files/default_profile.jpg";
 
 exports.createUser = (req, res, next) => {
   // console.log(req.body);
@@ -33,28 +33,27 @@ exports.createUser = (req, res, next) => {
   });
 };
 
-
 exports.updateUserFields = (req, res, next) => {
   // we have to overwrite the whole field array in order to updated the data and keep it's order because of Firestore array limitations!
   const fieldName = req.body.fieldName;
   const objData = req.body.obj;
   utils.modifyVideoUrl(objData);
   const userId = req.params.userId;
-  userModel.updateUserFields(userId, fieldName, objData).then(response => {
+  userModel.updateUserFields(userId, fieldName, objData).then((response) => {
     if (!response) {
       res.status(500).json({ errorMessage: "User data could not be updated!" });
     } else {
       res.status(201).json({ successMessage: "User data updated successfully!" });
     }
   });
-}
+};
 
 exports.addUserFields = (req, res, next) => {
   const fieldName = req.body.fieldName;
   const objData = req.body.obj;
   utils.modifyVideoUrl(objData);
   const userId = req.params.userId;
-  userModel.addUserFields(userId, fieldName, objData).then(response => {
+  userModel.addUserFields(userId, fieldName, objData).then((response) => {
     if (!response) {
       res.status(500).json({ errorMessage: "User data could not be added!" });
     } else {
@@ -67,11 +66,11 @@ exports.deleteUserFields = (req, res, next) => {
   const fieldName = req.body.fieldName;
   const objData = req.body.obj;
   const userId = req.params.userId;
-  userModel.deleteUserFields(userId, fieldName, objData).then(response => {
+  userModel.deleteUserFields(userId, fieldName, objData).then((response) => {
     if (!response) {
       res.status(500).json({ errorMessage: "User data could not be removed!" });
     } else {
       res.status(200).json({ successMessage: "User data removed successfully!" });
     }
-  })
+  });
 };
