@@ -12,23 +12,18 @@ exports.uploadImage = (req, res, next) => {
   uploadToBucket("licenta_image_files", buffer, uniqueId, extension)
     .then((_) => {
       const imgUrl = `https://storage.googleapis.com/licenta_image_files/${uniqueId}.${extension}`;
-      (userType === "company" ? uploadProfileCompany : uploadProfile)
-        .uploadImageProfile(imgUrl, userId)
-        .then((response) => {
-          if (!response) {
-            res.status(500).json({
-              errorMesasge: `${userType} profile picture could not be updated!`,
-            });
-          } else {
-            res
-              .status(200)
-              .json({ successMessage: `${userType} profile picture updated!` });
-          }
-        });
+      (userType === "company" ? uploadProfileCompany : uploadProfile).uploadImageProfile(imgUrl, userId).then((response) => {
+        if (!response) {
+          res.status(500).json({
+            errorMesasge: `${userType} profile picture could not be updated!`,
+          });
+        } else {
+          res.status(200).json({ successMessage: `${userType} profile picture updated!` });
+        }
+      });
+      (userType === "company" ? uploadProfileCompany : uploadProfile).updateDuplicateProfile(imgUrl, userId);
     })
     .catch((_) => {
-      res
-        .status(500)
-        .json({ errorMesasge: `${userType} profile picture could not pe uploaded` });
+      res.status(500).json({ errorMesasge: `${userType} profile picture could not pe uploaded` });
     });
 };

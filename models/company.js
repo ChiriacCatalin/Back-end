@@ -30,6 +30,21 @@ module.exports.uploadImageProfile = async function (imageUrl, uid) {
   }
 };
 
+// we use batch writes to make sure that we don't have inconsistent data in case of interruption
+module.exports.updateDuplicateProfile = async function (imageUrl, uid) {
+  const batch = db.batch();
+  const docRef = db.collection("companies").doc(uid).collection("jobs").where("companyId", "==", uid);
+  docRef.get().then((response) => {
+    response.docs.forEach((doc) => {
+      const documentRef = db.collection("companies").doc(uid).collection("jobs").doc(doc.id);
+      batch.update(documentRef, { imgUrl: imageUrl });
+    });
+    batch.commit().then((res) => {
+      return true;
+    });
+  });
+};
+
 module.exports.updateCompanyFields = async function (uid, fieldName, obj) {
   const docRef = db.collection("companies").doc(uid);
   try {
