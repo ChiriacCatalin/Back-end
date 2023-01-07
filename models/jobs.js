@@ -59,22 +59,22 @@ module.exports.findAllJobs = async function (queryParams) {
 function setQuery(queryParams) {
   let query = db.collectionGroup("jobs");
 
-  if (queryParams.date) {
+  if (queryParams.date && queryParams.date !== 'null') {
     let dateLimit = Date.now() - +queryParams.date;
     query = query.where("date", ">=", dateLimit);
   }
-  if (queryParams.experienceLevel)
+  if (queryParams.experienceLevel && queryParams.experienceLevel !== 'null')
     query = query.where("experienceLevel", "==", queryParams.experienceLevel);
-  if (queryParams.jobType) {
+  if (queryParams.jobType && queryParams.jobType !== 'null') {
     query = query.where("jobType", "==", queryParams.jobType);
   }
-  if (queryParams.onSiteRemote) {
+  if (queryParams.onSiteRemote && queryParams.onSiteRemote !== 'null') {
     query = query.where("onSiteRemote", "==", queryParams.onSiteRemote);
   }
-  if (queryParams.country) {
+  if (queryParams.country && queryParams.country !== 'null' && queryParams.country !== 'Any') {
     query = query.where("country", "==", queryParams.country);
   }
-  if (queryParams.city) {
+  if (queryParams.city && queryParams.city !== 'null' && queryParams.city !== 'Any') {
     query = query.where(
       "filterCity",
       "==",

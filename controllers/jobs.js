@@ -78,6 +78,7 @@ exports.updateJobById = (req, res, next) => {
   let data = { ...req.body };
   utils.modifyVideoUrl(data);
   data.date = Date.now();
+  data.filterCity = data.city.toLowerCase().replace(/\s+/g, " ").trim();
   jobsModel.updateJobById(companyId, jobId, data).then((response) => {
     if (!response) {
       res.status(500).json({ errorMessage: "Job could not be updated" });
